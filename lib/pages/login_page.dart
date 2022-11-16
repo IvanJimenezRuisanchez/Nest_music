@@ -30,21 +30,10 @@ class _LoginPageState extends State<LoginPage> {
               _userTextField(),
               SizedBox(height: 15.0),
               _passwordTextField(),
-              SizedBox(height: 30.0),
-              Row(
-                children: [
-                  Spacer(),
-                  _bLogin(),
-                  Expanded(
-                    child: SizedBox.square(),
-                  ),
-                  _bSignUp(),
-                  Spacer(),
-
-                ],
-                mainAxisAlignment:  MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-              )
+              SizedBox(height: 15.0),
+              _forgotPassword(),
+              _bLogin(),
+              _bSignUp()
 
             ],
           ),
@@ -63,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
               decoration: InputDecoration(
                   icon: Icon(Icons.email),
                   hintText: 'Exemple@gmail.com',
-                  labelText: 'Adresse Couriel'
+                  labelText: 'Adresse Courrier'
               ),
               onChanged: (value) {
 
@@ -85,7 +74,7 @@ class _LoginPageState extends State<LoginPage> {
               decoration: InputDecoration(
                   icon: Icon(Icons.lock),
                   hintText: 'Mot de Passe',
-                  labelText: 'Votre Mot de Passe'
+                  labelText: 'Votre Mot de Passe',
               ),
               onChanged: (value) {},
             ),
@@ -100,12 +89,19 @@ class _LoginPageState extends State<LoginPage> {
           return RaisedButton(
             onPressed: () {},
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 15.0),
-              child: Text('Login'),
+              padding: EdgeInsets.symmetric(horizontal: 150.0, vertical: 15.0),
+              child: Text('Login',
+                style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18.0
+              )),
             ),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30)
             ),
+            elevation: 10.0,
+            color: Colors.redAccent,
+
           );
 
         }
@@ -115,17 +111,35 @@ class _LoginPageState extends State<LoginPage> {
   Widget _bSignUp() {
     return StreamBuilder(
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          return RaisedButton(
-            onPressed: () {},
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 15.0),
-              child: Text('Sign Up'),
-            ),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30)
-            ),
+          return Row(
+            children: <Widget>[
+              const Text("Vous n'avez pas de compte ?"),
+              TextButton(
+                child: const Text(
+                  'Sign Up',
+                  style: TextStyle(fontSize: 20),
+                ),
+                onPressed: () {
+                  Navigator.pushNamed(context, 'sign_up');
+                },
+              )
+            ],
+            mainAxisAlignment: MainAxisAlignment.center,
           );
+        }
+    );
+  }
 
+
+  Widget _forgotPassword() {
+    return StreamBuilder(
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          return TextButton(
+            onPressed: () {
+              //forgot password screen
+            },
+            child: const Text('Forgot Password',),
+          );
         }
     );
   }
