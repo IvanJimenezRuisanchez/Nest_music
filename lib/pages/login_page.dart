@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 
 class LoginPage extends StatefulWidget {
   static String id = 'login_page';
@@ -8,14 +11,28 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+
+  @override
+  void dispose(){
+    emailController.dispose();
+    passwordController.dispose();
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return Form(
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         body: Center(
           child: Column(
             children: [
-              SizedBox(height: 20.0),
+              SizedBox(height: 25.0),
               RichText(
                 text: TextSpan(
                   children: const <TextSpan>[
@@ -25,16 +42,15 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               Image.asset('images/AppLogo.png',
-                height: 400.0,),
-              SizedBox(height: 15.0),
+                height: 380.0,),
+              SizedBox(height: 10.0),
               _userTextField(),
-              SizedBox(height: 15.0),
+              SizedBox(height: 10.0),
               _passwordTextField(),
-              SizedBox(height: 15.0),
+              SizedBox(height: 10.0),
               _forgotPassword(),
               _bLogin(),
-              _bSignUp()
-
+              _bSignUp(),
             ],
           ),
         ),
@@ -48,14 +64,20 @@ class _LoginPageState extends State<LoginPage> {
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           return Container(
             padding: EdgeInsets.symmetric(horizontal: 20.0),
-            child: TextField(
+            child: TextFormField(
+              controller: emailController,
               decoration: InputDecoration(
                   icon: Icon(Icons.email),
                   hintText: 'Exemple@gmail.com',
                   labelText: 'Adresse Courrier'
               ),
               onChanged: (value) {
-
+              },
+              validator: (value){
+                if(value != null && !value.contains(new RegExp(r'[@]')) | value.contains(new RegExp(r'[!#$%^&*(),?":{}|<>]'))
+                | !value.endsWith('.com')) {
+                  return 'Adresse Courrier invalide';
+                }
               },
             ),
           );
@@ -68,7 +90,8 @@ class _LoginPageState extends State<LoginPage> {
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           return Container(
             padding: EdgeInsets.symmetric(horizontal: 20.0),
-            child: TextField(
+            child: TextFormField(
+              controller: passwordController,
               keyboardType: TextInputType.visiblePassword,
               obscureText: true,
               decoration: InputDecoration(
@@ -77,6 +100,17 @@ class _LoginPageState extends State<LoginPage> {
                   labelText: 'Votre Mot de Passe',
               ),
               onChanged: (value) {},
+              validator: (value){
+                if(value != null && value.length < 7){
+                  return 'Le mot de passe est invalide (7 caractères minimum)';
+                }
+                if(value != null && value.length > 7 && !value.contains(new RegExp(r'[A-Z]'))){
+                  return 'Le mot de passe doit contenir au moins un caractère majuscule';
+                }
+                else{
+                  return null;
+                }
+              },
             ),
           );
         }
@@ -87,7 +121,7 @@ class _LoginPageState extends State<LoginPage> {
     return StreamBuilder(
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           return RaisedButton(
-            onPressed: () {},
+            onPressed: signIn,
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 150.0, vertical: 15.0),
               child: Text('Login',
@@ -136,11 +170,18 @@ class _LoginPageState extends State<LoginPage> {
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           return TextButton(
             onPressed: () {
+              Navigator.pushNamed(context, 'forgot_password');
               //forgot password screen
             },
             child: const Text('Forgot Password',),
           );
         }
     );
+  }
+
+  Future signIn() async{
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim());
   }
 }
