@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "745753533324",
+    "project_id": "nestmusic-7c593",
+    "storage_bucket": "nestmusic-7c593.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:745753533324:android:8688cb22ab5bac0447d4a9",
+        "android_client_info": {
+          "package_name": "com.example.nest_music"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "745753533324-oo2uo2reidqqf09btbc5c86914rimpjq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2rDuoAb-jznsa2hwsZrYCUi19Yb-TcmM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "745753533324-oo2uo2reidqqf09btbc5c86914rimpjq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -50,7 +50,7 @@ class _SignUpState extends State<SignUp> {
               SizedBox(height: 10,),
               _bSignUp(),
               _bLogin()
-              
+
             ]
           ),
         ),
