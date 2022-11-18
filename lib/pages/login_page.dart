@@ -32,7 +32,7 @@ class _LoginPageState extends State<LoginPage> {
         body: Center(
           child: Column(
             children: [
-              SizedBox(height: 25.0),
+              SizedBox(height: 30.0),
               RichText(
                 text: TextSpan(
                   children: const <TextSpan>[
@@ -43,11 +43,11 @@ class _LoginPageState extends State<LoginPage> {
               ),
               Image.asset('images/AppLogo.png',
                 height: 380.0,),
-              SizedBox(height: 10.0),
+              SizedBox(height: 15.0),
               _userTextField(),
-              SizedBox(height: 10.0),
+              SizedBox(height: 15.0),
               _passwordTextField(),
-              SizedBox(height: 10.0),
+              SizedBox(height: 20.0),
               _forgotPassword(),
               _bLogin(),
               _bSignUp(),
@@ -100,17 +100,6 @@ class _LoginPageState extends State<LoginPage> {
                   labelText: 'Votre Mot de Passe',
               ),
               onChanged: (value) {},
-              validator: (value){
-                if(value != null && value.length < 7){
-                  return 'Le mot de passe est invalide (7 caractères minimum)';
-                }
-                if(value != null && value.length > 7 && !value.contains(new RegExp(r'[A-Z]'))){
-                  return 'Le mot de passe doit contenir au moins un caractère majuscule';
-                }
-                else{
-                  return null;
-                }
-              },
             ),
           );
         }
@@ -173,15 +162,29 @@ class _LoginPageState extends State<LoginPage> {
               Navigator.pushNamed(context, 'forgot_password');
               //forgot password screen
             },
-            child: const Text('Forgot Password',),
+            child: const Text('Mot de passe oublié ?',),
           );
         }
     );
   }
 
   Future signIn() async{
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim());
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailController.text.trim(),
+          password: passwordController.text.trim());
+    } on FirebaseAuthException catch(e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Mauvais email ou mot de passe. Réessayer!'),
+          action: SnackBarAction(
+            label: 'Action',
+            onPressed: () {
+              // Code to execute.
+            },
+          ),
+        ),
+      );
+    }
   }
 }

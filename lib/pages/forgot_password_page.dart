@@ -68,6 +68,21 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 },
               )
               ),
+            Row(
+              children: <Widget>[
+                const Text("Retour au Log In"),
+                TextButton(
+                  child: const Text(
+                    'Log In',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(context, 'login_page');
+                  },
+                )
+              ],
+              mainAxisAlignment: MainAxisAlignment.center,
+            )
           ]
           ),
         ),
