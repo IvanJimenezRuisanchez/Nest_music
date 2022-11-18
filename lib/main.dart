@@ -5,6 +5,7 @@ import 'package:nest_music/pages/home_page.dart';
 import 'package:nest_music/pages/login_page.dart';
 import 'package:nest_music/pages/sign_up.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:nest_music/pages/verification_email.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,6 +15,7 @@ Future main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
+  static String id = 'myApp';
 
 
   @override
@@ -25,7 +27,7 @@ class MyApp extends StatelessWidget {
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context,snapshot) {
             if (snapshot.hasData) {
-              return Homepage();
+              return VerificationEmail();
             }
             else {
               return LoginPage();
@@ -35,6 +37,8 @@ class MyApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       routes: {
+        VerificationEmail.id : (context) => VerificationEmail(),
+        MyApp.id: (context) => MyApp(),
         ForgotPasswordPage.id: (context) => ForgotPasswordPage(),
         LoginPage.id: (context) => LoginPage(),
         SignUp.id: (context) => SignUp(),

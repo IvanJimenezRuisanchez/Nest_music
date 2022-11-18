@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "@firebase/auth": "^0.20.11"
+    "@firebase/auth": "^0.20.11",
+    "firebase": "^8.10.1"
   }
 }
