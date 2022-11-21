@@ -15,8 +15,8 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   final emailController = TextEditingController();
-  final emailConfirmController = TextEditingController();
   final passwordController = TextEditingController();
+  final passwordConfirmController = TextEditingController();
   final userNameController = TextEditingController();
   var birthday = '';
 
@@ -24,9 +24,9 @@ class _SignUpState extends State<SignUp> {
   @override
   void dispose() {
     emailController.dispose();
-    emailConfirmController.dispose();
     userNameController.dispose();
     passwordController.dispose();
+    passwordConfirmController.dispose();
 
     super.dispose();
   }
@@ -54,9 +54,9 @@ class _SignUpState extends State<SignUp> {
                 SizedBox(height: 30,),
                 _emailTextField(),
                 SizedBox(height: 30,),
-                _emailConfirmTextField(),
-                SizedBox(height: 30,),
                 _passwordTextField(),
+                SizedBox(height: 30,),
+                _passwordConfirmTextField(),
                 SizedBox(height: 30,),
                 _userNameTextField(),
                 SizedBox(height: 30,),
@@ -86,30 +86,6 @@ class _SignUpState extends State<SignUp> {
     );
   }
 
-  Widget _emailConfirmTextField() {
-    return StreamBuilder(
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          return Container(
-            padding: EdgeInsets.symmetric(horizontal: 35.0),
-            child: TextFormField(
-              controller: emailConfirmController,
-              keyboardType: TextInputType.emailAddress,
-              obscureText: true,
-              decoration: InputDecoration(
-                  hintText: 'Exemple@gmail.com',
-                  labelText: 'Confirmer Votre Courrier'
-              ),
-              validator: (value){
-                if(value != emailController.text.trim) {
-                  return "L'adresse e-mail n'est pas la même";
-                }
-              },
-              onChanged: (value) {},
-            ),
-          );
-        }
-    );
-  }
 
   Widget _emailTextField() {
     return StreamBuilder(
@@ -144,13 +120,37 @@ class _SignUpState extends State<SignUp> {
             padding: EdgeInsets.symmetric(horizontal: 35.0),
             child: TextFormField(
               controller: passwordController,
-              keyboardType: TextInputType.visiblePassword,
-              obscureText: true,
               decoration: InputDecoration(
                 hintText: 'Mot de Passe',
                 labelText: 'Créer un mot de passe',
               ),
-              onChanged: (value) {},
+
+              onChanged: (value) {
+              },
+            ),
+          );
+        }
+    );
+  }
+
+  Widget _passwordConfirmTextField() {
+    return StreamBuilder(
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          return Container(
+            padding: EdgeInsets.symmetric(horizontal: 35.0),
+            child: TextFormField(
+              controller: passwordConfirmController,
+              decoration: InputDecoration(
+                hintText: 'Mot de Passe',
+                labelText: 'Confirmer votre mot de passe',
+              ),
+              validator: (value){
+                if (passwordController.text.trim() != value){
+                  return 'Le mot de passe ne correspond pas';
+                }
+              },
+              onChanged: (value) {
+              },
             ),
           );
         }
@@ -185,7 +185,7 @@ class _SignUpState extends State<SignUp> {
               initialDateTime: DateTime.now(),
               mode: CupertinoDatePickerMode.date,
               use24hFormat: true,
-              minimumYear: 2004,
+              minimumYear: 1922,
               onDateTimeChanged: (DateTime newDate) {
                 birthday = newDate.year.toString()+'/'+newDate.month.toString()+'/'+newDate.day.toString();
               },

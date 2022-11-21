@@ -13,7 +13,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-
+  var _isHidden;
 
   @override
   void dispose(){
@@ -21,6 +21,12 @@ class _LoginPageState extends State<LoginPage> {
     passwordController.dispose();
 
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    _isHidden = false;
   }
 
   @override
@@ -93,11 +99,17 @@ class _LoginPageState extends State<LoginPage> {
             child: TextFormField(
               controller: passwordController,
               keyboardType: TextInputType.visiblePassword,
-              obscureText: true,
+              obscureText: _isHidden,
               decoration: InputDecoration(
                   icon: Icon(Icons.lock),
                   hintText: 'Mot de Passe',
                   labelText: 'Votre Mot de Passe',
+                  suffix: InkWell(
+                    onTap: _toggleMotPasse,
+                    child: Icon(
+                      _isHidden ? Icons.visibility : Icons.visibility_off
+                    ),
+                  )
               ),
               onChanged: (value) {},
             ),
@@ -187,4 +199,10 @@ class _LoginPageState extends State<LoginPage> {
       );
     }
   }
+
+  Future _toggleMotPasse() async{
+    setState(() {
+      _isHidden = !_isHidden;
+    });
+    }
 }
