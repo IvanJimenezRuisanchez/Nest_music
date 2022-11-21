@@ -95,7 +95,6 @@ class _SignUpState extends State<SignUp> {
             child: TextFormField(
               controller: emailController,
               keyboardType: TextInputType.emailAddress,
-              obscureText: true,
               decoration: InputDecoration(
                   hintText: 'Exemple@gmail.com',
                   labelText: 'Adresse Courrier'
