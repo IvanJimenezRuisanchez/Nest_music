@@ -47,7 +47,7 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
               ),
-              Image.asset('images/AppLogo.png',
+              Image.asset('assets/images/AppLogo.png',
                 height: 380.0,),
               SizedBox(height: 15.0),
               _userTextField(),
@@ -121,7 +121,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget _bLogin() {
     return StreamBuilder(
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          return RaisedButton(
+          return ElevatedButton(
             onPressed: signIn,
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 150.0, vertical: 15.0),
@@ -131,11 +131,6 @@ class _LoginPageState extends State<LoginPage> {
                 fontSize: 18.0
               )),
             ),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30)
-            ),
-            elevation: 10.0,
-            color: Colors.redAccent,
 
           );
 

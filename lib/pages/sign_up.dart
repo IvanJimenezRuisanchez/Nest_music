@@ -197,7 +197,7 @@ class _SignUpState extends State<SignUp> {
   Widget _bSignUp() {
     return StreamBuilder(
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          return RaisedButton(
+          return ElevatedButton(
             onPressed: signUp,
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 150.0, vertical: 15.0),
@@ -207,11 +207,6 @@ class _SignUpState extends State<SignUp> {
                       fontSize: 18.0
                   )),
             ),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30)
-            ),
-            elevation: 10.0,
-            color: Colors.redAccent,
 
           );
         }

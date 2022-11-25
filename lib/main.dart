@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:nest_music/pages/account_manager.dart';
 import 'package:nest_music/pages/forgot_password_page.dart';
 import 'package:nest_music/pages/home_page.dart';
 import 'package:nest_music/pages/login_page.dart';
@@ -42,7 +43,8 @@ class MyApp extends StatelessWidget {
         ForgotPasswordPage.id: (context) => ForgotPasswordPage(),
         LoginPage.id: (context) => LoginPage(),
         SignUp.id: (context) => SignUp(),
-        Homepage.id: (context) => Homepage()
+        Homepage.id: (context) => Homepage(),
+        AccountManager.id: (context) => AccountManager()
       },
 
     );

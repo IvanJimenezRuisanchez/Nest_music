@@ -15,18 +15,43 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: Center(
-        child: Column(
-          children: [ 
-            Text(user.email!),
-            SizedBox(height: 40),
-            ElevatedButton(onPressed: () => FirebaseAuth.instance.signOut(), child: Text('ss'))
-          ]
+        child: Scaffold(
+          extendBodyBehindAppBar: true,
+          resizeToAvoidBottomInset: false,
+          appBar: PreferredSize(
+          preferredSize: Size.fromHeight(80.0),
+          child:  AppBar(
+            toolbarHeight: 120.0,
+            automaticallyImplyLeading: false,
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            title: Text(
+              'Bienvenue',
+              style: TextStyle(fontFamily: 'Lobster-Regular', fontSize: 50,color: Colors.white),
+            ),
+
+            actions: [
+              userInterface(),
+              SizedBox(width: 20,)
+            ],
+          )),
+          body: Container(
+            color: Colors.deepPurple[200],
+          ),
         ),
-      ),
-    )
+    );
+  }
+
+  Widget userInterface(){
+    return IconButton(
+        icon: Icon(
+        Icons.menu,
+        color: Colors.white,
+          size: 35,
+    ),
+    onPressed: () {
+      Navigator.pushNamed(context, 'account_manager');
+    },
     );
   }
 }
