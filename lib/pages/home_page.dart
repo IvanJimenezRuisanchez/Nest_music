@@ -1,15 +1,21 @@
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+
+import 'music_list.dart';
+
 class Homepage extends StatefulWidget {
   static String id = 'home_page';
-
   @override
   State<Homepage> createState() => _HomepageState();
 }
 
 class _HomepageState extends State<Homepage> {
+  final  email = FirebaseAuth.instance.currentUser?.email;
+  var user_name = FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser?.email!).get();
   final user = FirebaseAuth.instance.currentUser!;
   @override
   Widget build(BuildContext context) {
@@ -27,7 +33,7 @@ class _HomepageState extends State<Homepage> {
             backgroundColor: Colors.transparent,
             elevation: 0,
             title: Text(
-              'Bienvenue',
+              user_name.toString(),
               style: TextStyle(fontFamily: 'Lobster-Regular', fontSize: 50,color: Colors.white),
             ),
 
@@ -57,7 +63,7 @@ class _HomepageState extends State<Homepage> {
                     child: Text('Bienvenue sur Nest Music',
                       style: TextStyle(
                           fontSize: 16,
-                          color: Colors.white.withOpacity(0.5)
+                          color: Colors.white
                       ),),),
                   Padding(
                     padding: EdgeInsets.only(top: 15,right: 20,bottom: 20),
@@ -119,9 +125,7 @@ class _HomepageState extends State<Homepage> {
                         flex: 1,
                         child: TabBarView(
                           children: [
-                            Container(
-                              color: Color(0xFF31314F).withOpacity(0.5),
-                            ),
+                            MusicList(),
                             Container(
                               color: Color(0xFF31314F).withOpacity(0.5),
                             ),
