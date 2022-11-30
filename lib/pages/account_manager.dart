@@ -105,7 +105,9 @@ class _AccountManagerState extends State<AccountManager> {
               fontSize: 20
             ),),
             onTap: (){
-              show = true;
+              setState(() {
+                show = true;
+              });
             },
           ),
 
@@ -174,7 +176,9 @@ class _AccountManagerState extends State<AccountManager> {
         TextButton(
           onPressed: () {
             Navigator.pop(context, 'account_manager');
-            show = false;
+            setState(() {
+              show = false;
+            });
           },
           child: const Text('NO'),
         ),

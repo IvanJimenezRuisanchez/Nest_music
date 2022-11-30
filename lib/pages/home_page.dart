@@ -136,7 +136,7 @@ class _HomepageState extends State<Homepage> {
                               color: Color(0xFF31314F).withOpacity(0.5),
                             ),
                           ],
-                        ))
+                        )),
                 ],
               ),
               ),

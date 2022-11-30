@@ -40,6 +40,9 @@ dependencies:
   cupertino_icons: ^1.0.2
   cloud_firestore: any
   flutter_settings_screens: ^0.2.2+1
+  flutter_progressed_play_button: ^0.1.5
+  firebase_storage: ^11.0.6
+  get: ^4.6.5
 
 dev_dependencies:
   flutter_test:
