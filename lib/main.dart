@@ -4,6 +4,7 @@ import 'package:nest_music/pages/account_manager.dart';
 import 'package:nest_music/pages/forgot_password_page.dart';
 import 'package:nest_music/pages/home_page.dart';
 import 'package:nest_music/pages/login_page.dart';
+import 'package:nest_music/pages/music_player_bottom.dart';
 import 'package:nest_music/pages/sign_up.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:nest_music/pages/verification_email.dart';

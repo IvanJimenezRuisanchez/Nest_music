@@ -43,6 +43,9 @@ dependencies:
   flutter_progressed_play_button: ^0.1.5
   firebase_storage: ^11.0.6
   get: ^4.6.5
+  audio_video_progress_bar: ^0.11.0
+  audioplayers: ^1.1.1
+  marquee: ^2.2.3
 
 dev_dependencies:
   flutter_test:

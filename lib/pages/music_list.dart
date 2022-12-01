@@ -34,7 +34,7 @@ class _MusicListState extends State<MusicList> {
               child: Column(
                 children: [
                 SizedBox(
-                height: 20,
+                height: 25,
               ),
                 Text("Recommandations",
                   style: TextStyle(
@@ -42,7 +42,7 @@ class _MusicListState extends State<MusicList> {
                     fontSize: 20,
                   ),),
                 SizedBox(
-                  height: 10,
+                  height: 25,
                 ),SingleChildScrollView(
                     child: Container(
                       child: Column(

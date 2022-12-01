@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:nest_music/pages/music_player_bottom.dart';
 
 
 import 'music_list.dart';
@@ -24,7 +25,7 @@ class _HomepageState extends State<Homepage> {
         child: Scaffold(
           extendBodyBehindAppBar: true,
           resizeToAvoidBottomInset: false,
-          backgroundColor: Colors.deepPurple[200],
+          backgroundColor: Colors.black,
           appBar: PreferredSize(
           preferredSize: Size.fromHeight(80.0),
           child:  AppBar(
@@ -36,7 +37,6 @@ class _HomepageState extends State<Homepage> {
               user_name.toString(),
               style: TextStyle(fontFamily: 'Lobster-Regular', fontSize: 50,color: Colors.white),
             ),
-
             actions: [
               userInterface(),
               SizedBox(width: 20,)
@@ -82,10 +82,14 @@ class _HomepageState extends State<Homepage> {
                             height: 50,
                             width: 200,
                             child: TextFormField(
+                              cursorColor: Colors.white,
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
                               decoration: InputDecoration(
                                 hintText: 'Rechercher de la musique',
                                 hintStyle: TextStyle(
-                                  color: Colors.white.withOpacity(0.5),
+                                  color: Colors.white,
                                 ),
                                 border: InputBorder.none
                               ),
@@ -95,7 +99,7 @@ class _HomepageState extends State<Homepage> {
                           child: Icon(
                             Icons.search,
                             size: 30,
-                            color: Colors.white.withOpacity(0.5),
+                            color: Colors.white,
                           ),)
                         ],
                       ),
@@ -141,6 +145,7 @@ class _HomepageState extends State<Homepage> {
               ),
               ),
             ),
+          bottomNavigationBar: MusicPlayerBottom(song_to_play: 's'),
           )
         );
   }

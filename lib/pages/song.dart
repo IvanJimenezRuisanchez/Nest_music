@@ -41,10 +41,10 @@ class _SongState extends State<Song> {
   Widget build(BuildContext context) {
     return InkWell(
       child: Container(
-      margin: EdgeInsets.only(top: 15,right: 12,left: 5),
+      margin: EdgeInsets.only(right: 10,left: 5,bottom: 15),
       padding: EdgeInsets.symmetric(vertical: 15,horizontal: 15),
       decoration: BoxDecoration(
-          color: Color(0xFF30314D).withOpacity(0.5),
+          color: Color(0xFF31314F).withOpacity(0.5),  //Color(0xFF30314D).withOpacity(0.5)
           borderRadius: BorderRadius.circular(10)
       ),
       child:
@@ -82,8 +82,8 @@ class _SongState extends State<Song> {
                         softWrap: true,
                         overflow: TextOverflow.fade,
                         style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 17,
+                          color: Colors.white.withOpacity(0.9),
+                          fontSize: 15,
                         ),)
                     ],
                   )
@@ -94,7 +94,7 @@ class _SongState extends State<Song> {
           Text(widget.duration,
             style: TextStyle(
               color: Colors.white,
-              fontSize: 17,
+              fontSize: 15,
             ),),
         ],
       ),

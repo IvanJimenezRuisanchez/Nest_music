@@ -17,6 +17,6 @@ class IconWidget extends StatelessWidget {
     decoration: BoxDecoration(
       shape: BoxShape.circle,
       color: color),
-    child: Icon(icon,color: Colors.white),
+    child: Icon(icon,color: Colors.black),
     );
 }
