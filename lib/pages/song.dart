@@ -3,7 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:nest_music/globalState/current_song_state.dart';
 import 'package:nest_music/services/firebase_storage_service.dart';
+import 'package:provider/provider.dart';
+
+import 'music_player_bottom.dart';
 
 class Song extends StatefulWidget {
   final id;
@@ -28,6 +32,7 @@ class Song extends StatefulWidget {
 }
 
 class _SongState extends State<Song> {
+
   var isPlaying;
   var isFavorite;
   late FirebaseStorageService firebaseStorageService = Get.put(FirebaseStorageService());
@@ -35,7 +40,13 @@ class _SongState extends State<Song> {
   @override
   void initState() {
     isPlaying = false;
+    context.read<CurrentSongState>().addSongToPlylist(widget.title+'/'+widget.artist+'/'+widget.image);
     super.initState();
+  }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
   @override
   Widget build(BuildContext context) {
@@ -103,6 +114,12 @@ class _SongState extends State<Song> {
      onTap: (){
        setState(() {
          isPlaying = !isPlaying;
+         var songDetails = widget.title+'/'+widget.artist+'/'+widget.image;
+         if (songDetails != context.read<CurrentSongState>().getSong){
+           context.read<CurrentSongState>().setSong(songDetails);
+           context.read<CurrentSongState>().setPlaying(true);
+           context.read<CurrentSongState>().setMusicPlayer(context.read<CurrentSongState>().getSong);
+         }
        });
      },
       onLongPress: (){

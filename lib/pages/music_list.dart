@@ -36,11 +36,16 @@ class _MusicListState extends State<MusicList> {
                 SizedBox(
                 height: 25,
               ),
-                Text("Recommandations",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                  ),),
+                Row(children: [
+                  Spacer(),
+                  Text("Recommandations",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                    ),),
+                  Icon(Icons.music_note_sharp,color: Colors.white,),
+                  Spacer(),
+                ]),
                 SizedBox(
                   height: 25,
                 ),SingleChildScrollView(

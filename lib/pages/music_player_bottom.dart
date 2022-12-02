@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
@@ -5,7 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:marquee/marquee.dart';
+import 'package:provider/provider.dart';
 
+import '../globalState/current_song_state.dart';
 import '../services/firebase_storage_service.dart';
 
 class MusicPlayerBottom extends StatefulWidget {
@@ -19,23 +23,32 @@ class MusicPlayerBottom extends StatefulWidget {
   State<MusicPlayerBottom> createState() => _MusicPlayerBottomState();
 }
 
+
 class _MusicPlayerBottomState extends State<MusicPlayerBottom> {
   final audioPLayer = AudioPlayer();
   late FirebaseStorageService firebaseStorageService = Get.put(FirebaseStorageService());
   var isPLaying;
   var isRepeat;
+  var isFavorite;
   Duration duration = Duration.zero;
   Duration position = Duration.zero;
   @override
-  void initState() {
+  void initState(){
     isPLaying = true;
     isRepeat = false;
-
+    isFavorite = false;
     audioPLayer.onPlayerStateChanged.listen((event) {
       setState(() {
         isPLaying = event == PlayerState.playing;
       });
     });
+
+    _asyncMethod() async {
+      var details = widget.song_to_play.split('/');
+      var url = await firebaseStorageService.getSong(details[1]+'-'+details[0]);
+      await audioPLayer.play(UrlSource(url));
+    }
+
 
     audioPLayer.onDurationChanged.listen((event) {
       setState(() {
@@ -48,14 +61,35 @@ class _MusicPlayerBottomState extends State<MusicPlayerBottom> {
         position = event;
       });
     });
+
+    audioPLayer.onPlayerComplete.listen((event) {
+      if (isRepeat == true) {
+        _asyncMethod();
+      }
+      else{
+        audioPLayer.stop();
+        context.read<CurrentSongState>().setNextSong();
+      }
+    });
+
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      _asyncMethod();
+    });
+  }
+
+  @override
+  void dispose() {
+    audioPLayer.stop();
+    super.dispose();
   }
 
   @override
    Widget build(BuildContext context){
+    var song = context.watch<CurrentSongState>().currentSong.split('/');
     return BottomAppBar(
       color: Colors.black54,
-        elevation:1,
+        elevation:4,
         child: SizedBox(
           height: 100,
           child: InkWell(
@@ -69,7 +103,7 @@ class _MusicPlayerBottomState extends State<MusicPlayerBottom> {
                       height: 60,
                       width: 60,
                       child: FutureBuilder<String>(
-                          future: firebaseStorageService.getImage('Un Verano Sin Ti'),
+                          future: firebaseStorageService.getImage('${song[2]}'),
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
                               return Image(
@@ -80,24 +114,27 @@ class _MusicPlayerBottomState extends State<MusicPlayerBottom> {
                           }
                       ),
                     ),
-                    SizedBox(width: 20),
+                    SizedBox(width: 10),
                     InkWell(
                       child :Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          buildAnimatedTitle('Moscow Mule'),
+                          buildAnimatedTitle('${song[0]}'),
                           Row(
                             children: [
-                              buildAnimatedArtist('Bad Bunny')
+                              buildAnimatedArtist('${song[1]}')
                             ],
                           )
                         ],
                       ),
                     ),
-                    Spacer(),
                     IconButton(
                         padding: EdgeInsets.zero,
-                        onPressed: (){}
+                        onPressed: () async {
+                          Timer(Duration(milliseconds: 500), () { // <-- Delay here
+                            context.read<CurrentSongState>().setPreviousSong(); // <-- Code run after delay
+                          });
+                        }
                         , icon: Icon(Icons.skip_previous,color: Colors.white.withOpacity(0.8),size: 30,)
                     ),
                     isPLaying ? IconButton(
@@ -114,27 +151,33 @@ class _MusicPlayerBottomState extends State<MusicPlayerBottom> {
                           setState(() {
                             isPLaying = true;
                           });
-                          var url = await firebaseStorageService.getSong('Bad Bunny-Moscow Mule');
+                          var url = await firebaseStorageService.getSong(song[1]+'-'+song[0]);
                           print(url);
                           await audioPLayer.play(UrlSource(url));
                         }
                         , icon: Icon(Icons.play_circle_filled_outlined,color: Colors.white,size: 50,)),
                     IconButton(
                         padding: EdgeInsets.zero,
-                        onPressed: (){}
+                        onPressed: () async {
+                          Timer(Duration(milliseconds: 500), () { // <-- Delay here
+                            context.read<CurrentSongState>().setNextSong(); // <-- Code run after delay
+                          });
+                        }
                         , icon: Icon(Icons.skip_next_rounded,color: Colors.white.withOpacity(0.8),size: 30,)
                     ),
                     isRepeat ? IconButton(
                         padding: EdgeInsets.zero,
+                        constraints: BoxConstraints(),
                         onPressed: () async {
                           setState(() {
                             isRepeat = false;
                           });
                         }
-                        , icon: Icon(Icons.repeat,color: Colors.teal ,size: 25,)
+                        , icon: Icon(Icons.repeat_one,color: Colors.teal ,size: 25,)
                     )
                     : IconButton(
                         padding: EdgeInsets.zero,
+                        constraints: BoxConstraints(),
                         onPressed: (){
                           setState(() {
                             isRepeat = true;
@@ -143,6 +186,27 @@ class _MusicPlayerBottomState extends State<MusicPlayerBottom> {
                         , icon: Icon(Icons.repeat,color: Colors.white.withOpacity(0.8),size: 25,)
                     ),
                     SizedBox(width: 10,),
+                    isFavorite ? IconButton(
+                        padding: EdgeInsets.zero,
+                        constraints: BoxConstraints(),
+                        onPressed: () async {
+                          setState(() {
+                            isFavorite = false;
+                            context.read<CurrentSongState>().removeFromMyFavorites();
+                          });
+                        }
+                        , icon: Icon(Icons.favorite,color: Colors.redAccent,size: 25,)
+                    ) : IconButton(
+                        padding: EdgeInsets.zero,
+                        constraints: BoxConstraints(),
+                        onPressed: (){
+                          setState(() {
+                            isFavorite = true;
+                            context.read<CurrentSongState>().addToMyFavorites();
+                          });
+                        }
+                        , icon: Icon(Icons.favorite_border,color: Colors.white,size: 25,)
+                    ),
                   ]
                   ),
                   Row(
@@ -180,7 +244,7 @@ class _MusicPlayerBottomState extends State<MusicPlayerBottom> {
           );
   }
 
-  Widget buildAnimatedTitle(String text) => Container(
+  Widget buildAnimatedTitle(String text) => SizedBox(
       height: 20,
       width: 140,
       child: Marquee(
@@ -190,12 +254,12 @@ class _MusicPlayerBottomState extends State<MusicPlayerBottom> {
           fontSize: 18,
           fontWeight: FontWeight.w500,
         ),
-        blankSpace: 50,
         velocity: 50,
-        pauseAfterRound: Duration(seconds: 5),)
+        blankSpace: 100,
+        pauseAfterRound: Duration(seconds: 3))
   );
 
-  Widget buildAnimatedArtist(String text) => Container(
+  Widget buildAnimatedArtist(String text) => SizedBox(
       height: 20,
       width: 140,
       child: Marquee(
@@ -204,9 +268,9 @@ class _MusicPlayerBottomState extends State<MusicPlayerBottom> {
             color: Colors.white.withOpacity(0.9),
             fontSize: 15,
           ),
-        blankSpace: 100,
-        velocity: 50,
-        pauseAfterRound: Duration(seconds: 15),)
+      blankSpace: 100,
+          pauseAfterRound: Duration(seconds: 5),
+          startAfter: Duration(seconds: 5))
   );
 
 }

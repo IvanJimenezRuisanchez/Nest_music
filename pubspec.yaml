@@ -46,6 +46,9 @@ dependencies:
   audio_video_progress_bar: ^0.11.0
   audioplayers: ^1.1.1
   marquee: ^2.2.3
+  redux: ^5.0.0
+  flutter_riverpod: ^2.1.1
+  provider: ^5.0.0
 
 dev_dependencies:
   flutter_test:

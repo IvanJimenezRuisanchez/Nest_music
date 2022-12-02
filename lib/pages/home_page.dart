@@ -3,7 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:nest_music/globalState/current_song_state.dart';
 import 'package:nest_music/pages/music_player_bottom.dart';
+import 'package:provider/provider.dart';
 
 
 import 'music_list.dart';
@@ -20,6 +22,8 @@ class _HomepageState extends State<Homepage> {
   final user = FirebaseAuth.instance.currentUser!;
   @override
   Widget build(BuildContext context) {
+
+    var show = context.watch<CurrentSongState>().playing;
     return DefaultTabController(
         length: 4,
         child: Scaffold(
@@ -114,7 +118,7 @@ class _HomepageState extends State<Homepage> {
                       border: Border(
                         bottom: BorderSide(
                           width: 3,
-                          color: Color(0xFF899CCF)
+                          color: Colors.teal
                         ),
                       )
                     ),
@@ -145,7 +149,7 @@ class _HomepageState extends State<Homepage> {
               ),
               ),
             ),
-          bottomNavigationBar: MusicPlayerBottom(song_to_play: 's'),
+          bottomNavigationBar: show ? context.watch<CurrentSongState>().getMusicPlayer : SizedBox(),
           )
         );
   }
@@ -162,4 +166,5 @@ class _HomepageState extends State<Homepage> {
     },
     );
   }
+  
 }
