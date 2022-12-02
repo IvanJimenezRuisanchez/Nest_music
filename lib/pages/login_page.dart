@@ -34,26 +34,37 @@ class _LoginPageState extends State<LoginPage> {
     return Form(
       autovalidateMode: AutovalidateMode.onUserInteraction,
       child: Scaffold(
+        backgroundColor: Colors.black,
         resizeToAvoidBottomInset: false,
         body: Center(
           child: Column(
             children: [
-              SizedBox(height: 30.0),
               RichText(
                 text: TextSpan(
                   children: const <TextSpan>[
-                    TextSpan(text: 'Nest ', style: TextStyle(color: Colors.black,fontSize: 50,)),
-                    TextSpan(text: 'Music', style: TextStyle(color: Colors.red,fontSize: 50,)),
+                    TextSpan(text: 'Nest ', style: TextStyle(color: Colors.white,fontSize: 50,)),
+                    TextSpan(text: 'Music', style: TextStyle(color: Color(
+                        0xF5FF0000),fontSize: 50,)),
                   ],
                 ),
               ),
               Image.asset('assets/images/AppLogo.png',
-                height: 380.0,),
+                height: 390.0,),
               SizedBox(height: 15.0),
-              _userTextField(),
-              SizedBox(height: 15.0),
-              _passwordTextField(),
-              SizedBox(height: 20.0),
+              Container(
+                padding: EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(40),
+                  color: Colors.white.withOpacity(0.1),
+                ),
+                child: Column(
+                  children: [
+                    _userTextField(),
+                    SizedBox(height: 5.0),
+                    _passwordTextField(),
+                  ],
+                ),
+              ),
               _forgotPassword(),
               _bLogin(),
               _bSignUp(),
@@ -71,11 +82,28 @@ class _LoginPageState extends State<LoginPage> {
           return Container(
             padding: EdgeInsets.symmetric(horizontal: 20.0),
             child: TextFormField(
+              style: TextStyle(
+                color: Colors.white
+              ),
+
               controller: emailController,
+              cursorColor: Colors.white,
               decoration: InputDecoration(
-                  icon: Icon(Icons.email),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
+                ),
+                  icon: Icon(Icons.email,color: Colors.white),
                   hintText: 'Exemple@gmail.com',
-                  labelText: 'Adresse Courrier'
+                  hintStyle: TextStyle(
+                    color: Colors.white
+                  ),
+                  labelText: 'Adresse Courrier',
+                  labelStyle: TextStyle(
+                  color: Colors.white
+              ),
               ),
               onChanged: (value) {
               },
@@ -97,17 +125,35 @@ class _LoginPageState extends State<LoginPage> {
           return Container(
             padding: EdgeInsets.symmetric(horizontal: 20.0),
             child: TextFormField(
+              style: TextStyle(
+                  color: Colors.white
+              ),
+              cursorColor: Colors.white,
               controller: passwordController,
               keyboardType: TextInputType.visiblePassword,
               obscureText: _isHidden,
               decoration: InputDecoration(
-                  icon: Icon(Icons.lock),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                    ),
+                  icon: Icon(Icons.lock,color: Colors.white,),
+                  iconColor: Colors.white,
                   hintText: 'Mot de Passe',
                   labelText: 'Votre Mot de Passe',
+                  hintStyle: TextStyle(
+                      color: Colors.white
+                  ),
+                  labelStyle: TextStyle(
+                      color: Colors.white
+                  ),
                   suffix: InkWell(
                     onTap: _toggleMotPasse,
                     child: Icon(
-                      _isHidden ? Icons.visibility : Icons.visibility_off
+                      _isHidden ? Icons.visibility : Icons.visibility_off,
+                      color: Colors.white,
                     ),
                   )
               ),
@@ -123,12 +169,16 @@ class _LoginPageState extends State<LoginPage> {
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           return ElevatedButton(
             onPressed: signIn,
+            style: ButtonStyle(
+              backgroundColor:MaterialStateProperty.all<Color>(Color(
+              0xF5FF0000).withOpacity(0.9)),
+            ),
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 150.0, vertical: 15.0),
               child: Text('Login',
                 style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18.0
+                fontSize: 20.0,
+                  color: Colors.white,
               )),
             ),
 
@@ -143,11 +193,12 @@ class _LoginPageState extends State<LoginPage> {
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           return Row(
             children: <Widget>[
-              const Text("Vous n'avez pas de compte ?"),
+              const Text("Vous n'avez pas de compte ?",style: TextStyle(color: Colors.white)),
               TextButton(
                 child: const Text(
                   'Sign Up',
-                  style: TextStyle(fontSize: 20),
+                  style: TextStyle(fontSize: 25,color: Color(
+                      0xF5FF0000))
                 ),
                 onPressed: () {
                   Navigator.pushNamed(context, 'sign_up');
@@ -169,7 +220,7 @@ class _LoginPageState extends State<LoginPage> {
               Navigator.pushNamed(context, 'forgot_password');
               //forgot password screen
             },
-            child: const Text('Mot de passe oublié ?',),
+            child: const Text('Mot de passe oublié ?',style: TextStyle(color: Colors.white)),
           );
         }
     );

@@ -22,13 +22,13 @@ class _AccountManagerState extends State<AccountManager> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.deepPurple[200],
+        backgroundColor: Colors.black.withAlpha(10),
         resizeToAvoidBottomInset: false,
         appBar: PreferredSize(
             preferredSize: Size.fromHeight(65.0),
             child:  AppBar(
               toolbarHeight: 120.0,
-              backgroundColor: Colors.deepPurple[300],
+              backgroundColor: Color(0xFF31314F).withOpacity(0.5),
               elevation: 3,
               centerTitle: true,
               title: Text(
@@ -72,7 +72,7 @@ class _AccountManagerState extends State<AccountManager> {
   Widget logOut(){
     return Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-        color: Colors.deepPurple[200],
+        color: Color(0xFF31314F).withOpacity(0.5),
         elevation: 10,
         child: Column(
           children: <Widget>[
@@ -94,7 +94,7 @@ class _AccountManagerState extends State<AccountManager> {
   Widget deleteAccount(){
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-      color: Colors.deepPurple[200],
+      color: Color(0xFF31314F).withOpacity(0.5),
       elevation: 10,
       child: Column(
         children: <Widget>[
@@ -119,7 +119,7 @@ class _AccountManagerState extends State<AccountManager> {
   Widget changePassword(){
     return Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-        color: Colors.deepPurple[200],
+        color: Color(0xFF31314F).withOpacity(0.5),
         elevation: 10,
         child: Column(
           children: <Widget>[
@@ -139,7 +139,7 @@ class _AccountManagerState extends State<AccountManager> {
   Widget changeEmail(){
     return Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-        color: Colors.deepPurple[200],
+        color: Color(0xFF31314F).withOpacity(0.5),
         elevation: 10,
         child: Column(
           children: <Widget>[

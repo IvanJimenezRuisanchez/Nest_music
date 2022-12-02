@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:nest_music/globalState/current_song_state.dart';
 import 'package:nest_music/pages/music_player_bottom.dart';
 import 'package:provider/provider.dart';
@@ -18,11 +19,9 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   final  email = FirebaseAuth.instance.currentUser?.email;
-  var user_name = FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser?.email!).get();
   final user = FirebaseAuth.instance.currentUser!;
   @override
   Widget build(BuildContext context) {
-
     var show = context.watch<CurrentSongState>().playing;
     return DefaultTabController(
         length: 4,
@@ -38,7 +37,7 @@ class _HomepageState extends State<Homepage> {
             backgroundColor: Colors.transparent,
             elevation: 0,
             title: Text(
-              user_name.toString(),
+              'Nest Music',
               style: TextStyle(fontFamily: 'Lobster-Regular', fontSize: 50,color: Colors.white),
             ),
             actions: [
