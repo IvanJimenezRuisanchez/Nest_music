@@ -87,6 +87,9 @@ class _MusicPlayerBottomState extends State<MusicPlayerBottom> {
   @override
    Widget build(BuildContext context){
     var song = context.watch<CurrentSongState>().currentSong.split('/');
+    setState(() {
+      isFavorite = context.watch<CurrentSongState>().checkFavorite(widget.song_to_play);
+    });
     return BottomAppBar(
       color: Colors.black54,
         elevation:4,

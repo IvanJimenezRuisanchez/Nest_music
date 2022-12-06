@@ -38,7 +38,7 @@ class _MusicListState extends State<MusicList> {
               ),
                 Row(children: [
                   Spacer(),
-                  Text("Recommandations",
+                  Text("Songs",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 20,
@@ -52,7 +52,7 @@ class _MusicListState extends State<MusicList> {
                     child: Container(
                       child: Column(
                         children: snapshot.data!.docs.map((doc) {
-                          return Song(title: doc.get('title'), id: doc.id, artist: doc.get('artist'),duration: doc.get('duration'),image: doc.get('album'),);
+                          return Song(title: doc.get('title'), artist: doc.get('artist'),duration: doc.get('duration'),image: doc.get('album'),);
                         }).toList(),
                       ),
                     ),

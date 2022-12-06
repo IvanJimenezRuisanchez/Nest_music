@@ -1,4 +1,5 @@
 
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nest_music/globalState/current_song_state.dart';
 import 'package:nest_music/pages/music_player_bottom.dart';
+import 'package:nest_music/pages/my_favorites_songs.dart';
 import 'package:provider/provider.dart';
 
 
@@ -55,13 +57,20 @@ class _HomepageState extends State<Homepage> {
                 children: [
                   SizedBox(height: 30,),
                   Padding(padding: EdgeInsets.only(bottom: 5),
-                    child: Text('Bonjour',
-                      style: TextStyle(
+                    child: DefaultTextStyle(
+                    style: const TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
                         letterSpacing: 1,
                         color: Colors.white
-                      ),),),
+                    ),
+                    child: AnimatedTextKit(
+                    animatedTexts: [
+                    WavyAnimatedText('Bonjour'),
+                    ],
+                    isRepeatingAnimation: true,
+                    repeatForever: true,
+                    pause: Duration(seconds: 5),))),
                   Padding(padding: EdgeInsets.only(bottom: 5),
                     child: Text('Bienvenue sur Nest Music',
                       style: TextStyle(
@@ -136,9 +145,7 @@ class _HomepageState extends State<Homepage> {
                             Container(
                               color: Color(0xFF31314F).withOpacity(0.5),
                             ),
-                            Container(
-                              color: Color(0xFF31314F).withOpacity(0.5),
-                            ),
+                            MyFavorites(),
                             Container(
                               color: Color(0xFF31314F).withOpacity(0.5),
                             ),

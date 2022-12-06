@@ -10,7 +10,6 @@ import 'package:provider/provider.dart';
 import 'music_player_bottom.dart';
 
 class Song extends StatefulWidget {
-  final id;
   final title;
   final artist;
   final duration;
@@ -19,7 +18,6 @@ class Song extends StatefulWidget {
   const Song({
     Key? key,
     required this.title,
-    required this.id,
     required this.artist,
     required this.duration,
     required this.image
@@ -114,7 +112,7 @@ class _SongState extends State<Song> {
      onTap: (){
        setState(() {
          isPlaying = !isPlaying;
-         var songDetails = widget.title+'/'+widget.artist+'/'+widget.image;
+         var songDetails = widget.title+'/'+widget.artist+'/'+widget.image+'/'+widget.duration;
          if (songDetails != context.read<CurrentSongState>().getSong){
            context.read<CurrentSongState>().setSong(songDetails);
            context.read<CurrentSongState>().setPlaying(true);

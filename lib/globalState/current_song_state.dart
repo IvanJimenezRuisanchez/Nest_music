@@ -15,6 +15,8 @@ class CurrentSongState with ChangeNotifier{
   MusicPlayerBottom musicPlayerBottom = MusicPlayerBottom(song_to_play: '');
   MusicPlayerBottom get getMusicPlayer => musicPlayerBottom;
 
+  List get getMyFav => myFavorites;
+
   void setPlaying(value){
     playing = value;
     notifyListeners();
@@ -34,7 +36,6 @@ class CurrentSongState with ChangeNotifier{
   void addSongToPlylist(song){
     songsPlayList.add(song);
     print(myFavorites);
-    notifyListeners();
   }
 
   void addToMyFavorites(){
@@ -73,5 +74,12 @@ class CurrentSongState with ChangeNotifier{
     currentSong = songsPlayList[nextSong];
     musicPlayerBottom = MusicPlayerBottom(song_to_play: currentSong,key: UniqueKey());
     notifyListeners();
+  }
+
+  bool checkFavorite(song){
+    if (myFavorites.contains(song)){
+      return true;
+    }
+    return false;
   }
 }
