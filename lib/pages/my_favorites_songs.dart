@@ -19,14 +19,14 @@ class MyFavorites extends StatefulWidget {
 
 
 class _MyFavoritesState extends State<MyFavorites> {
-  final db = FirebaseFirestore.instance;
-  final email = FirebaseAuth.instance.currentUser?.email;
+  var db = FirebaseFirestore.instance;
+  var email = FirebaseAuth.instance.currentUser?.email;
   @override
   Widget build(BuildContext context) {
     context.read<CurrentSongState>().setNewPlaylist();
     return SingleChildScrollView(
       child: StreamBuilder<QuerySnapshot>(
-          stream: db.collection('playlists').snapshots(),
+          stream: db.collection('playlists').where(email!).snapshots(),
           builder: (context,snapshot){
             if (!snapshot.hasData){
               return Center(
@@ -67,7 +67,11 @@ class _MyFavoritesState extends State<MyFavorites> {
                           child: Container(
                             child: Column(
                               children: snapshot.data!.docs.map((doc) {
-                                List dbFavs = doc.get('myFavs').toString().split(';,');
+                                List dbFavs = [];
+                                if(doc.id == email) {
+                                  dbFavs = doc.get('myFavs')
+                                      .toString()
+                                      .split(';,');
                                   print(dbFavs);
                                   var i = 0;
                                   while (i < dbFavs.length) {
@@ -102,6 +106,7 @@ class _MyFavoritesState extends State<MyFavorites> {
                                     }
                                     i++;
                                   }
+                                }
                                 return Column(
                                   children: List.generate(dbFavs.length, (index){
                                     var song = dbFavs[index].toString().split('/');

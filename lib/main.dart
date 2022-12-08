@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:nest_music/globalState/current_song_state.dart';
 import 'package:nest_music/pages/account_manager.dart';
 import 'package:nest_music/pages/forgot_password_page.dart';
@@ -14,11 +15,14 @@ import 'package:sizer/sizer.dart';
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(
-      MultiProvider(providers: [
-        ChangeNotifierProvider(create: (_)=> CurrentSongState())
-      ]
-          , child:MyApp()));
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((_) {
+    runApp(
+        MultiProvider(providers: [
+          ChangeNotifierProvider(create: (_)=> CurrentSongState())
+        ]
+            , child:MyApp()));
+  });
 }
 
 class MyApp extends StatelessWidget {

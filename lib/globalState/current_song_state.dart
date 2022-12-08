@@ -1,10 +1,9 @@
-
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:nest_music/pages/music_player_bottom.dart';
+
+import '../pages/song.dart';
 
 class CurrentSongState with ChangeNotifier{
   final db = FirebaseFirestore.instance;
@@ -17,11 +16,14 @@ class CurrentSongState with ChangeNotifier{
   List myFavorites = [];
   List get getFavorites => myFavorites;
   List get getCurrentPlaylist => songsPlayList;
+  List allSongs = [];
 
   MusicPlayerBottom musicPlayerBottom = MusicPlayerBottom(song_to_play: '');
   MusicPlayerBottom get getMusicPlayer => musicPlayerBottom;
 
-
+  void addAllSongToPlylist(song){
+    allSongs.add(song);
+  }
   void setPlaying(value){
     playing = value;
     notifyListeners();
@@ -110,5 +112,25 @@ class CurrentSongState with ChangeNotifier{
       return true;
     }
     return false;
+  }
+
+  List getSongsByNameArtistOrTitle(value){
+    List songsFilter = [];
+    var i = 0;
+    while (i < allSongs.length){
+      List song = allSongs[i].toString().split('/');
+      var e = 0;
+      while (e < song.length) {
+        if (song[e].toString().trim().toLowerCase().contains(value.toString().trim().toLowerCase())){
+          if(!songsFilter.contains(allSongs[i].toString())) {
+            songsFilter.add(allSongs[i].toString());
+            break;
+          }
+        }
+        e++;
+      }
+      i++;
+    }
+    return songsFilter;
   }
 }

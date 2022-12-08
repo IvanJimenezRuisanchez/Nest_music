@@ -4,39 +4,42 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:nest_music/globalState/current_song_state.dart';
-import 'package:nest_music/pages/music_player_bottom.dart';
 import 'package:nest_music/pages/my_favorites_songs.dart';
+import 'package:nest_music/pages/nouveautes.dart';
+import 'package:nest_music/pages/search.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+
 
 
 import 'music_list.dart';
 
 class Homepage extends StatefulWidget {
+  Homepage({ Key? key }) : super(key: key);
   static String id = 'home_page';
   @override
   State<Homepage> createState() => _HomepageState();
 }
 
 
-
 class _HomepageState extends State<Homepage> {
-  final db = FirebaseFirestore.instance;
-  final email = FirebaseAuth.instance.currentUser?.email;
-  final user = FirebaseAuth.instance.currentUser!;
+  var db = FirebaseFirestore.instance;
+  var email = FirebaseAuth.instance.currentUser?.email;
+  var user = FirebaseAuth.instance.currentUser!;
+  var isSearching;
+  var searching;
   @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
+  void initState() {
+    isSearching = true;
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     var show = context.watch<CurrentSongState>().playing;
     return DefaultTabController(
-        length: 4,
+        length: 3,
         child: Scaffold(
           extendBodyBehindAppBar: true,
           resizeToAvoidBottomInset: false,
@@ -115,6 +118,19 @@ class _HomepageState extends State<Homepage> {
                                 ),
                                 border: InputBorder.none
                               ),
+                             onChanged: (value) {
+                                searching = value;
+                                if (value == ''){
+                                  setState(() {
+                                    isSearching = true;
+                                  });
+                                }
+                                else{
+                                  setState(() {
+                                    isSearching = false;
+                                  });
+                                }
+                             },
                             ),
                             ),
                           Padding(padding: EdgeInsets.symmetric(horizontal: 10),
@@ -141,8 +157,7 @@ class _HomepageState extends State<Homepage> {
                       )
                     ),
                     tabs: [
-                      Tab(text: 'Chansons',),
-                      Tab(text: 'Mes listes de lecture',),
+                      Tab(text: '   Home  ',),
                       Tab(text: 'Mes favoris',),
                       Tab(text: 'Nouveautés',),
                     ],
@@ -151,14 +166,9 @@ class _HomepageState extends State<Homepage> {
                         flex: 1,
                         child: TabBarView(
                           children: [
-                            MusicList(),
-                            Container(
-                              color: Color(0xFF31314F).withOpacity(0.5),
-                            ),
+                            isSearching ? MusicList() : Search(value: searching),
                             MyFavorites(),
-                            Container(
-                              color: Color(0xFF31314F).withOpacity(0.5),
-                            ),
+                            Nouveautes(),
                           ],
                         )),
               SingleChildScrollView(
@@ -175,7 +185,11 @@ class _HomepageState extends State<Homepage> {
                                     child: Container(
                                       child: Column(
                                         children: snapshot.data!.docs.map((doc) {
-                                          List dbFavs = doc.get('myFavs').toString().split(';,');
+                                          List dbFavs =[];
+                                          if(doc.id == email) {
+                                            dbFavs = doc.get('myFavs')
+                                                .toString()
+                                                .split(';,');
                                             print(dbFavs);
                                             var i = 0;
                                             while (i < dbFavs.length) {
@@ -209,6 +223,7 @@ class _HomepageState extends State<Homepage> {
                                                 }
                                               }
                                               i++;
+                                            }
                                             context.read<CurrentSongState>()
                                                 .setFavorites(dbFavs);
                                           }

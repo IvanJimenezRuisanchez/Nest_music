@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:nest_music/pages/icon_widget.dart';
 import 'package:nest_music/pages/song.dart';
 import 'package:provider/provider.dart';
 
@@ -57,7 +56,11 @@ class _MusicListState extends State<MusicList> {
                       child: Column(
                         children: snapshot.data!.docs.map((doc) {
                           context.read<CurrentSongState>().addSongToPlylist(doc.get('title')+'/'+doc.get('artist')+'/'+doc.get('album')+'/'+doc.get('duration'));
-                          return Song(title: doc.get('title'), artist: doc.get('artist'),duration: doc.get('duration'),image: doc.get('album'),);
+                          context.read<CurrentSongState>().addAllSongToPlylist(doc.get('title')+'/'+doc.get('artist')+'/'+doc.get('album')+'/'+doc.get('duration'));
+                          if(!doc.get('newInNest')){
+                            return Song(title: doc.get('title'), artist: doc.get('artist'),duration: doc.get('duration'),image: doc.get('album'),);
+                          }
+                          return Container();
                         }).toList(),
                       ),
                     ),
