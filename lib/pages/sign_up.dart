@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:nest_music/main.dart';
+import 'package:sizer/sizer.dart';
 
 class SignUp extends StatefulWidget {
   static String id = 'sign_up';
@@ -36,45 +37,46 @@ class _SignUpState extends State<SignUp> {
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
+        backgroundColor: Colors.black,
         body: Form(
           autovalidateMode: AutovalidateMode.onUserInteraction,
           child: Column(
               children: [
-                SizedBox(height: 60,),
+                SizedBox(height: 5.h,),
                 RichText(
                   text: TextSpan(
                     children: const <TextSpan>[
                       TextSpan(text: 'Sing ',
-                          style: TextStyle(color: Colors.black, fontSize: 50,)),
+                          style: TextStyle(color: Colors.white, fontSize: 50,)),
                       TextSpan(text: 'Up',
                           style: TextStyle(color: Colors.red, fontSize: 50,)),
                     ],
                   ),
                 ),
-                SizedBox(height: 30,),
+                SizedBox(height: 2.h,),
                 _emailTextField(),
-                SizedBox(height: 30,),
+                SizedBox(height: 2.h,),
                 _passwordTextField(),
-                SizedBox(height: 30,),
+                SizedBox(height: 2.h,),
                 _passwordConfirmTextField(),
-                SizedBox(height: 30,),
+                SizedBox(height: 2.h,),
                 _userNameTextField(),
-                SizedBox(height: 30,),
+                SizedBox(height: 3.h,),
                 RichText(
                   text: TextSpan(
                     children: const <TextSpan>[
                       TextSpan(text: 'Date de naissance ',
-                          style: TextStyle(color: Colors.black, fontSize: 20,))
+                          style: TextStyle(color: Colors.white, fontSize: 20,))
                     ],
                   ),
                 ),
-                SizedBox(height: 10,),
+                SizedBox(height: 1.h,),
                 SizedBox(
-                  width: 400.0,
-                  height: 100.0,
+                  width: 100.w,
+                  height: 10.h,
                   child: _agePickerWidget(),
                 ),
-                SizedBox(height: 10,),
+                SizedBox(height: 5.h,),
                 _bSignUp(),
                 _bLogin()
 
@@ -93,11 +95,27 @@ class _SignUpState extends State<SignUp> {
           return Container(
             padding: EdgeInsets.symmetric(horizontal: 35.0),
             child: TextFormField(
+            style: TextStyle(
+              color: Colors.white
+              ),
+              cursorColor: Colors.white,
               controller: emailController,
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
-                  hintText: 'Exemple@gmail.com',
-                  labelText: 'Adresse Courrier'
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
+                  ),
+                hintStyle: TextStyle(
+                    color: Colors.white
+                ),
+                labelStyle: TextStyle(
+                    color: Colors.white
+                ),
+                hintText: 'Exemple@gmail.com',
+                labelText: 'Adresse Courrier',
               ),
               validator: (value){
                 if(value != null && !value.contains(new RegExp(r'[@]')) | value.contains(new RegExp(r'[!#$%^&*(),?":{}|<>]'))
@@ -118,10 +136,26 @@ class _SignUpState extends State<SignUp> {
           return Container(
             padding: EdgeInsets.symmetric(horizontal: 35.0),
             child: TextFormField(
+              style: TextStyle(
+                color: Colors.white
+              ),
+              cursorColor: Colors.white,
               controller: passwordController,
               decoration: InputDecoration(
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
+                ),
                 hintText: 'Mot de Passe',
                 labelText: 'Créer un mot de passe',
+                hintStyle: TextStyle(
+                    color: Colors.white
+                ),
+                labelStyle: TextStyle(
+                    color: Colors.white
+                ),
               ),
 
               onChanged: (value) {
@@ -138,8 +172,24 @@ class _SignUpState extends State<SignUp> {
           return Container(
             padding: EdgeInsets.symmetric(horizontal: 35.0),
             child: TextFormField(
+              style: TextStyle(
+                  color: Colors.white
+              ),
+              cursorColor: Colors.white,
               controller: passwordConfirmController,
               decoration: InputDecoration(
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
+                ),
+                hintStyle: TextStyle(
+                    color: Colors.white
+                ),
+                labelStyle: TextStyle(
+                    color: Colors.white
+                ),
                 hintText: 'Mot de Passe',
                 labelText: 'Confirmer votre mot de passe',
               ),
@@ -162,10 +212,26 @@ class _SignUpState extends State<SignUp> {
           return Container(
             padding: EdgeInsets.symmetric(horizontal: 35.0),
             child: TextFormField(
+              style: TextStyle(
+                  color: Colors.white
+              ),
+              cursorColor: Colors.white,
               controller: userNameController,
               keyboardType: TextInputType.visiblePassword,
               obscureText: true,
               decoration: InputDecoration(
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
+                ),
+                hintStyle: TextStyle(
+                    color: Colors.white
+                ),
+                labelStyle: TextStyle(
+                    color: Colors.white
+                ),
                 hintText: "Nom d'utilisateur",
                 labelText: "Nouveau Nom D'utilisateur",
               ),
@@ -180,6 +246,11 @@ class _SignUpState extends State<SignUp> {
     return StreamBuilder(
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           return Container(
+            padding: EdgeInsets.all(1),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(40),
+              color: Colors.white.withOpacity(0.9),
+            ),
             child: CupertinoDatePicker(
               initialDateTime: DateTime.now(),
               mode: CupertinoDatePickerMode.date,
@@ -199,8 +270,12 @@ class _SignUpState extends State<SignUp> {
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           return ElevatedButton(
             onPressed: signUp,
+            style: ButtonStyle(
+              backgroundColor:MaterialStateProperty.all<Color>(Color(
+                  0xF5FF0000).withOpacity(0.9)),
+            ),
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 150.0, vertical: 15.0),
+              padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 15.0),
               child: Text('Sign Up',
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
@@ -214,15 +289,17 @@ class _SignUpState extends State<SignUp> {
   }
 
   Widget _bLogin() {
-    return StreamBuilder(
+    return Container(
+      child: StreamBuilder(
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           return Row(
             children: <Widget>[
-              const Text("Avez-vous déjà un compte ?"),
+              const Text("Avez-vous déjà un compte ?", style: TextStyle(color: Colors.white),),
               TextButton(
                 child: const Text(
                   'Log In',
-                  style: TextStyle(fontSize: 20),
+                  style: TextStyle(fontSize: 25,color: Color(
+                      0xF5FF0000)),
                 ),
                 onPressed: () {
                   Navigator.pushNamed(context, 'myApp');
@@ -232,6 +309,7 @@ class _SignUpState extends State<SignUp> {
             mainAxisAlignment: MainAxisAlignment.center,
           );
         }
+    ),
     );
   }
 

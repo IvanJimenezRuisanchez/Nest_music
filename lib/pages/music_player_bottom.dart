@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:marquee/marquee.dart';
 import 'package:provider/provider.dart';
+import 'package:sizer/sizer.dart';
 
 import '../globalState/current_song_state.dart';
 import '../services/firebase_storage_service.dart';
@@ -71,12 +72,12 @@ class _MusicPlayerBottomState extends State<MusicPlayerBottom> {
         context.read<CurrentSongState>().setNextSong();
       }
     });
-
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_){
       _asyncMethod();
     });
   }
+
 
   @override
   void dispose() {
@@ -87,24 +88,22 @@ class _MusicPlayerBottomState extends State<MusicPlayerBottom> {
   @override
    Widget build(BuildContext context){
     var song = context.watch<CurrentSongState>().currentSong.split('/');
-    setState(() {
-      isFavorite = context.watch<CurrentSongState>().checkFavorite(widget.song_to_play);
-    });
+    isFavorite = context.watch<CurrentSongState>().checkFavorite(context.watch<CurrentSongState>().currentSong);
     return BottomAppBar(
       color: Colors.black54,
         elevation:4,
         child: SizedBox(
-          height: 100,
+          height: 14.h,
           child: InkWell(
             child: Column(
               children: [
-                SizedBox(height: 10,),
+                SizedBox(height: 1.h,),
                 Row(
                   children: [
-                    SizedBox(width: 10),
+                    SizedBox(width: 1.h),
                     Container(
-                      height: 60,
-                      width: 60,
+                      height: 8.h,
+                      width: 20.w,
                       child: FutureBuilder<String>(
                           future: firebaseStorageService.getImage('${song[2]}'),
                           builder: (context, snapshot) {
@@ -117,7 +116,6 @@ class _MusicPlayerBottomState extends State<MusicPlayerBottom> {
                           }
                       ),
                     ),
-                    SizedBox(width: 10),
                     InkWell(
                       child :Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -133,6 +131,7 @@ class _MusicPlayerBottomState extends State<MusicPlayerBottom> {
                     ),
                     IconButton(
                         padding: EdgeInsets.zero,
+                        constraints: BoxConstraints(),
                         onPressed: () async {
                           Timer(Duration(milliseconds: 500), () { // <-- Delay here
                             context.read<CurrentSongState>().setPreviousSong(); // <-- Code run after delay
@@ -140,6 +139,7 @@ class _MusicPlayerBottomState extends State<MusicPlayerBottom> {
                         }
                         , icon: Icon(Icons.skip_previous,color: Colors.white.withOpacity(0.8),size: 30,)
                     ),
+                    SizedBox(width: 0.8.h,),
                     isPLaying ? IconButton(
                         padding: EdgeInsets.zero,
                         onPressed: () async {
@@ -160,6 +160,7 @@ class _MusicPlayerBottomState extends State<MusicPlayerBottom> {
                         }
                         , icon: Icon(Icons.play_circle_filled_outlined,color: Colors.white,size: 50,)),
                     IconButton(
+                        constraints: BoxConstraints(),
                         padding: EdgeInsets.zero,
                         onPressed: () async {
                           Timer(Duration(milliseconds: 500), () { // <-- Delay here
@@ -168,6 +169,7 @@ class _MusicPlayerBottomState extends State<MusicPlayerBottom> {
                         }
                         , icon: Icon(Icons.skip_next_rounded,color: Colors.white.withOpacity(0.8),size: 30,)
                     ),
+                    SizedBox(width: 1.w,),
                     isRepeat ? IconButton(
                         padding: EdgeInsets.zero,
                         constraints: BoxConstraints(),
@@ -188,7 +190,7 @@ class _MusicPlayerBottomState extends State<MusicPlayerBottom> {
                         }
                         , icon: Icon(Icons.repeat,color: Colors.white.withOpacity(0.8),size: 25,)
                     ),
-                    SizedBox(width: 10,),
+                    SizedBox(width: 0.1.w,),
                     isFavorite ? IconButton(
                         padding: EdgeInsets.zero,
                         constraints: BoxConstraints(),
@@ -248,8 +250,8 @@ class _MusicPlayerBottomState extends State<MusicPlayerBottom> {
   }
 
   Widget buildAnimatedTitle(String text) => SizedBox(
-      height: 20,
-      width: 140,
+      height: 3.h,
+      width: 35.w,
       child: Marquee(
         text: text,
         style: TextStyle(
@@ -263,8 +265,8 @@ class _MusicPlayerBottomState extends State<MusicPlayerBottom> {
   );
 
   Widget buildAnimatedArtist(String text) => SizedBox(
-      height: 20,
-      width: 140,
+      height: 3.h,
+      width: 20.w,
       child: Marquee(
         text: text,
           style: TextStyle(

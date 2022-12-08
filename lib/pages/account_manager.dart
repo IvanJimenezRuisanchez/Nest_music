@@ -84,7 +84,7 @@ class _AccountManagerState extends State<AccountManager> {
               ),),
               onTap: (){
                 FirebaseAuth.instance.signOut();
-                Navigator.pushNamed(context, 'myApp');
+                Navigator.of(context).pushNamedAndRemoveUntil('myApp', (Route route) => false);
               },
             )
           ],
@@ -175,7 +175,6 @@ class _AccountManagerState extends State<AccountManager> {
       actions: [
         TextButton(
           onPressed: () {
-            Navigator.pop(context, 'account_manager');
             setState(() {
               show = false;
             });
@@ -188,7 +187,7 @@ class _AccountManagerState extends State<AccountManager> {
                 .delete();
             FirebaseAuth.instance.signOut();
             FirebaseAuth.instance.currentUser?.delete();
-            Navigator.pushNamed(context, 'myApp');
+            Navigator.of(context).pushNamedAndRemoveUntil('myApp', (Route route) => false);
           },
           child: const Text('YES'),
 

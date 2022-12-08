@@ -1,21 +1,26 @@
-import 'dart:ffi';
+
+import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:nest_music/pages/music_player_bottom.dart';
 
 class CurrentSongState with ChangeNotifier{
+  final db = FirebaseFirestore.instance;
+  final email = FirebaseAuth.instance.currentUser?.email;
   String currentSong = '';
   String get getSong => currentSong;
   bool playing = false;
   bool get getPlaying => playing;
   List songsPlayList = [];
   List myFavorites = [];
+  List get getFavorites => myFavorites;
+  List get getCurrentPlaylist => songsPlayList;
 
   MusicPlayerBottom musicPlayerBottom = MusicPlayerBottom(song_to_play: '');
   MusicPlayerBottom get getMusicPlayer => musicPlayerBottom;
 
-  List get getMyFav => myFavorites;
 
   void setPlaying(value){
     playing = value;
@@ -27,31 +32,56 @@ class CurrentSongState with ChangeNotifier{
     notifyListeners();
   }
 
+  void setFavorites(favorites){
+    myFavorites = favorites;
+  }
+
+  void setNewPlaylist(){
+    songsPlayList = [];
+  }
+
   void setMusicPlayer(song){
-    print(songsPlayList);
     musicPlayerBottom = MusicPlayerBottom(song_to_play: song,key: UniqueKey(),);
     notifyListeners();
   }
 
   void addSongToPlylist(song){
     songsPlayList.add(song);
-    print(myFavorites);
   }
 
-  void addToMyFavorites(){
-    myFavorites.add(currentSong);
-    print(myFavorites);
-    notifyListeners();
+  Future<void> addToMyFavorites() async {
+    if (!myFavorites.contains(currentSong+';')) {
+        final playListDb = FirebaseFirestore.instance.collection('playlists').doc(
+            FirebaseAuth.instance.currentUser?.email);
+        myFavorites.add(currentSong+';');
+        final json = {
+          'myFavs': myFavorites
+        };
+        await playListDb.set(json);
+        notifyListeners();
+    }
   }
 
-  void removeFromMyFavorites(){
-    int index = myFavorites.indexOf(currentSong);
+  Future<void> removeFromMyFavorites() async {
+    int index = myFavorites.indexOf(currentSong+';');
+    print(myFavorites[index]);
     myFavorites.removeAt(index);
-    print(myFavorites);
-    notifyListeners();
+    if (myFavorites.isEmpty){
+      final playListDb= FirebaseFirestore.instance.collection('playlists').doc(FirebaseAuth.instance.currentUser?.email);
+      playListDb.delete();
+    }
+    else {
+      final playListDb = FirebaseFirestore.instance.collection('playlists').doc(
+          FirebaseAuth.instance.currentUser?.email);
+      final json = {
+        'myFavs': myFavorites,
+      };
+      await playListDb.update(json);
+      notifyListeners();
+    }
   }
+
   void setNextSong(){
-    playing = true;
     int nextSong;
     if (songsPlayList.indexOf(currentSong) == songsPlayList.length-1){
       nextSong = -1;
@@ -64,20 +94,19 @@ class CurrentSongState with ChangeNotifier{
   }
 
   void setPreviousSong(){
-    playing = true;
-    int nextSong;
+    int previous;
     if (songsPlayList.indexOf(currentSong) == 0){
-      nextSong =  songsPlayList.length-1;
+      previous =  songsPlayList.length;
     }else{
-      nextSong = songsPlayList.indexOf(currentSong)-1;
+      previous = songsPlayList.indexOf(currentSong);
     }
-    currentSong = songsPlayList[nextSong];
+    currentSong = songsPlayList[previous-1];
     musicPlayerBottom = MusicPlayerBottom(song_to_play: currentSong,key: UniqueKey());
     notifyListeners();
   }
 
   bool checkFavorite(song){
-    if (myFavorites.contains(song)){
+    if (myFavorites.contains(song+';')){
       return true;
     }
     return false;

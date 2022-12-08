@@ -9,6 +9,7 @@ import 'package:nest_music/globalState/current_song_state.dart';
 import 'package:nest_music/pages/music_player_bottom.dart';
 import 'package:nest_music/pages/my_favorites_songs.dart';
 import 'package:provider/provider.dart';
+import 'package:sizer/sizer.dart';
 
 
 import 'music_list.dart';
@@ -19,9 +20,18 @@ class Homepage extends StatefulWidget {
   State<Homepage> createState() => _HomepageState();
 }
 
+
+
 class _HomepageState extends State<Homepage> {
-  final  email = FirebaseAuth.instance.currentUser?.email;
+  final db = FirebaseFirestore.instance;
+  final email = FirebaseAuth.instance.currentUser?.email;
   final user = FirebaseAuth.instance.currentUser!;
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     var show = context.watch<CurrentSongState>().playing;
@@ -50,8 +60,8 @@ class _HomepageState extends State<Homepage> {
           body: SafeArea(
             child: Padding(
               padding: EdgeInsets.only(
-                top: 20,
-                left: 22),
+                top: 2.h,
+                left: 1.w),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -151,11 +161,70 @@ class _HomepageState extends State<Homepage> {
                             ),
                           ],
                         )),
+              SingleChildScrollView(
+                child: StreamBuilder<QuerySnapshot>(
+                    stream: db.collection('playlists').snapshots(),
+                    builder: (context,snapshot){
+                      if (!snapshot.hasData){
+                        return Center();
+                      }else{
+                        return Container(
+                            child: Column(
+                                children: [
+                                 SingleChildScrollView(
+                                    child: Container(
+                                      child: Column(
+                                        children: snapshot.data!.docs.map((doc) {
+                                          List dbFavs = doc.get('myFavs').toString().split(';,');
+                                            print(dbFavs);
+                                            var i = 0;
+                                            while (i < dbFavs.length) {
+                                              if (i == 0) {
+                                                if (dbFavs.length == 1) {
+                                                  dbFavs[0] = dbFavs[0]
+                                                      .toString()
+                                                      .substring(0, dbFavs[0]
+                                                      .toString()
+                                                      .length - 2);
+                                                }
+                                                dbFavs[0] = dbFavs[0]
+                                                    .toString()
+                                                    .substring(1, dbFavs[0]
+                                                    .toString()
+                                                    .length) + ';';
+                                              } else {
+                                                if (i == dbFavs.length - 1) {
+                                                  dbFavs[i] = dbFavs[i]
+                                                      .toString()
+                                                      .substring(1, dbFavs[i]
+                                                      .toString()
+                                                      .length - 2) + ';';
+                                                }
+                                                else {
+                                                  dbFavs[i] = dbFavs[i]
+                                                      .toString()
+                                                      .substring(1, dbFavs[i]
+                                                      .toString()
+                                                      .length) + ';';
+                                                }
+                                              }
+                                              i++;
+                                            context.read<CurrentSongState>()
+                                                .setFavorites(dbFavs);
+                                          }
+                                          return Column();
+                                        }).toList(),
+                                      ),
+                                    ),
+                                  ),
+                                ]));
+                      }}),
+              )
                 ],
               ),
               ),
             ),
-          bottomNavigationBar: show ? context.watch<CurrentSongState>().getMusicPlayer : SizedBox(),
+          bottomNavigationBar: show ? context.watch<CurrentSongState>().musicPlayerBottom : SizedBox(),
           )
         );
   }

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 
 
 class LoginPage extends StatefulWidget {
@@ -39,6 +40,7 @@ class _LoginPageState extends State<LoginPage> {
         body: Center(
           child: Column(
             children: [
+              SizedBox(height: 3.h,),
               RichText(
                 text: TextSpan(
                   children: const <TextSpan>[
@@ -49,10 +51,10 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               Image.asset('assets/images/AppLogo.png',
-                height: 390.0,),
-              SizedBox(height: 15.0),
+                height: 40.h,),
+              SizedBox(height: 1.h),
               Container(
-                padding: EdgeInsets.all(20),
+                padding: EdgeInsets.all(15),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(40),
                   color: Colors.white.withOpacity(0.1),
@@ -60,7 +62,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: Column(
                   children: [
                     _userTextField(),
-                    SizedBox(height: 5.0),
+                    SizedBox(height: 3.0),
                     _passwordTextField(),
                   ],
                 ),
@@ -174,7 +176,7 @@ class _LoginPageState extends State<LoginPage> {
               0xF5FF0000).withOpacity(0.9)),
             ),
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 150.0, vertical: 15.0),
+              padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 15.0),
               child: Text('Login',
                 style: TextStyle(
                 fontSize: 20.0,

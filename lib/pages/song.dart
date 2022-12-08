@@ -6,6 +6,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:nest_music/globalState/current_song_state.dart';
 import 'package:nest_music/services/firebase_storage_service.dart';
 import 'package:provider/provider.dart';
+import 'package:sizer/sizer.dart';
 
 import 'music_player_bottom.dart';
 
@@ -38,7 +39,6 @@ class _SongState extends State<Song> {
   @override
   void initState() {
     isPlaying = false;
-    context.read<CurrentSongState>().addSongToPlylist(widget.title+'/'+widget.artist+'/'+widget.image);
     super.initState();
   }
   @override
@@ -50,8 +50,8 @@ class _SongState extends State<Song> {
   Widget build(BuildContext context) {
     return InkWell(
       child: Container(
-      margin: EdgeInsets.only(right: 10,left: 5,bottom: 15),
-      padding: EdgeInsets.symmetric(vertical: 15,horizontal: 15),
+      margin: EdgeInsets.only(right: 5,left: 5,bottom: 15),
+      padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 3.w),
       decoration: BoxDecoration(
           color: Color(0xFF31314F).withOpacity(0.5),  //Color(0xFF30314D).withOpacity(0.5)
           borderRadius: BorderRadius.circular(10)
@@ -60,8 +60,8 @@ class _SongState extends State<Song> {
       Row(
         children: [
           Container(
-            height: 50,
-            width: 50,
+            height: 10.h,
+            width: 15.w,
           child: FutureBuilder<String>(
             future: firebaseStorageService.getImage(widget.image),
             builder: (context, snapshot) {
@@ -74,7 +74,7 @@ class _SongState extends State<Song> {
             }
           ),
             ),
-          SizedBox(width: 20,),
+          SizedBox(width: 2.w,),
           InkWell(
               child :Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

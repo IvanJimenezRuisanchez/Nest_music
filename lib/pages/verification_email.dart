@@ -42,6 +42,7 @@ class _VerificationEmailState extends State<VerificationEmail> {
   Widget build(BuildContext context) => isEmailVerified
   ? Homepage()
       : Scaffold(
+        backgroundColor: Colors.black,
         body: Padding(
           padding: EdgeInsets.all(16),
           child: Column(
@@ -51,14 +52,17 @@ class _VerificationEmailState extends State<VerificationEmail> {
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
+                color: Colors.white
               ),
               textAlign: TextAlign.center),
               SizedBox(height: 30,),
               ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
                   minimumSize: Size.fromHeight(50),
+                  backgroundColor: Color(
+                      0xF5FF0000).withOpacity(0.9)
                 ),
-                icon: Icon(Icons.email,size: 30,),
+                icon: Icon(Icons.email,size: 30,color: Colors.white),
                 label: Text("Renvoyer l'e-mail",
                 style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),),
                 onPressed: (){
@@ -73,7 +77,8 @@ class _VerificationEmailState extends State<VerificationEmail> {
               TextButton(
                 child: const Text(
                   'Cancel',
-                  style: TextStyle(fontSize: 20),
+                  style: TextStyle(fontSize: 20,color: Color(
+                      0xF5FF0000)),
                 ),
                 onPressed: () {
                   FirebaseAuth.instance.signOut();

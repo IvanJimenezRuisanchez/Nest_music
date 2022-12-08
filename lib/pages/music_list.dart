@@ -3,6 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nest_music/pages/icon_widget.dart';
 import 'package:nest_music/pages/song.dart';
+import 'package:provider/provider.dart';
+
+import '../globalState/current_song_state.dart';
 
 class MusicList extends StatefulWidget {
   const MusicList({Key? key}) : super(key: key);
@@ -21,6 +24,7 @@ class _MusicListState extends State<MusicList> {
 
   @override
   Widget build(BuildContext context) {
+    context.read<CurrentSongState>().setNewPlaylist();
     return SingleChildScrollView(
       child: StreamBuilder<QuerySnapshot>(
         stream: db.collection('songs').snapshots(),
@@ -52,6 +56,7 @@ class _MusicListState extends State<MusicList> {
                     child: Container(
                       child: Column(
                         children: snapshot.data!.docs.map((doc) {
+                          context.read<CurrentSongState>().addSongToPlylist(doc.get('title')+'/'+doc.get('artist')+'/'+doc.get('album')+'/'+doc.get('duration'));
                           return Song(title: doc.get('title'), artist: doc.get('artist'),duration: doc.get('duration'),image: doc.get('album'),);
                         }).toList(),
                       ),

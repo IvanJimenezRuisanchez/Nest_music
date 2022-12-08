@@ -16,4 +16,5 @@ class FirebaseStorageService extends GetxService{
     var songUrl = await urlRef.getDownloadURL();
     return songUrl;
   }
+
 }
