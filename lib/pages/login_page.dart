@@ -1,9 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:nest_music/globalState/AppBuilder.dart';
-import 'package:nest_music/globalState/current_song_state.dart';
-import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 

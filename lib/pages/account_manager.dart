@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:nest_music/main.dart';
+import 'package:nest_music/services/firebase_storage_service.dart';
 import 'icon_widget.dart';
 
 class AccountManager extends StatefulWidget {
@@ -13,13 +14,23 @@ class AccountManager extends StatefulWidget {
 }
 
 class _AccountManagerState extends State<AccountManager> {
-  final user = FirebaseAuth.instance.currentUser!;
+  var user;
   var show;
+  var changeInputEmail;
+  final emailController = TextEditingController();
 
   @override
   void initState() {
+    changeInputEmail = true;
+    user = FirebaseAuth.instance.currentUser!;
     show = false;
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    super.dispose();
   }
   @override
   Widget build(BuildContext context) {
@@ -50,7 +61,6 @@ class _AccountManagerState extends State<AccountManager> {
               ),),
               changeEmail(),
               changePassword(),
-              langue(),
               logOut(),
               show ? showDialogAlert() : deleteAccount()
 
@@ -131,7 +141,21 @@ class _AccountManagerState extends State<AccountManager> {
                   color: Colors.white,
                   fontSize: 20
               ),),
-              onTap: (){},
+              onTap: (){
+                FirebaseAuth.instance.sendPasswordResetEmail(email: user.email);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text("Un e-mail a été envoyé pour changer le mot de passe"),
+                    action: SnackBarAction(
+                      label: 'Action',
+                      textColor: Colors.blueAccent,
+                      onPressed: () {
+                        // Code to execute.
+                      },
+                    ),
+                  ),
+                );
+              },
             )
           ],
         )
@@ -145,28 +169,71 @@ class _AccountManagerState extends State<AccountManager> {
         elevation: 10,
         child: Column(
           children: <Widget>[
-            ListTile(
-              leading: IconWidget(icon: Icons.email,color: Colors.transparent,),
-              title: Text('Changer E-mail',style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20
-              ),),
-              onTap: (){},
+            changeInputEmail ?
+                Column(children: [
+                  ListTile(
+                    title: Text('Current email',style : TextStyle(
+                        color: Colors.white,
+                        fontSize: 20
+                    ),),
+                  ),
+                  ListTile(
+                    leading: IconWidget(icon: Icons.email,color: Colors.transparent,),
+                    title: Text(user.email,style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18
+                    ),),
+                    onTap: (){
+                      setState(() {
+                        changeInputEmail = false;
+                      });
+                    },
+                  )
+                ],)
+                : Container(
+                    padding: EdgeInsets.all(15),
+                    child: TextFormField(
+                      style: TextStyle(
+                      color: Colors.white
+                      ),
+                      cursorColor: Colors.white,
+                      controller: emailController,
+                      decoration: InputDecoration(
+                      enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                      ),
+                      hintText: 'Nouveau E-mail',
+                      labelText: 'E-mail',
+                      hintStyle: TextStyle(
+                      color: Colors.white
+                      ),
+                      labelStyle: TextStyle(
+                      color: Colors.white
+                      ),
+                    ),
+                      validator: (value){
+                        if(value != null && !value.contains(new RegExp(r'[@]')) | value.contains(new RegExp(r'[!#$%^&*(),?":{}|<>]'))
+                        ) {
+                          return 'Adresse Courrier invalide';
+                        }
+                      },
+                      onFieldSubmitted: (value){
+                        /*
+                        FirebaseAuth.instance.currentUser?.updateEmail(emailController.text.toString().trim());
+                        FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser?.email).delete();
+                        final docUser = FirebaseFirestore.instance.collection('users').doc(emailController.text.trim());
+                        setState(() {
+                          changeInputEmail = true;
+                          user = FirebaseAuth.instance.currentUser;
+                        });
+                        Navigator.of(context).pushNamedAndRemoveUntil('myApp', (Route route) => false);*/
+                      },
+                  )
             )
-          ],
-        )
-    );
-  }
-
-  Widget langue(){
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-      color: Colors.deepPurple[200],
-      elevation: 10,
-      child: Column(
-        children: <Widget>[
-        ],
-      ),
+    ],)
     );
   }
 
@@ -198,8 +265,9 @@ class _AccountManagerState extends State<AccountManager> {
     );
   }
 
-
-
+  void updateEmail(value){
+    FirebaseAuth.instance.currentUser?.updateEmail(value);
+  }
 
 }
   

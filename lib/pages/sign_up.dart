@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:nest_music/main.dart';
 import 'package:sizer/sizer.dart';
 
 class SignUp extends StatefulWidget {
@@ -119,7 +118,7 @@ class _SignUpState extends State<SignUp> {
               ),
               validator: (value){
                 if(value != null && !value.contains(new RegExp(r'[@]')) | value.contains(new RegExp(r'[!#$%^&*(),?":{}|<>]'))
-                | !value.endsWith('.com')) {
+                ) {
                   return 'Adresse Courrier invalide';
                 }
               },

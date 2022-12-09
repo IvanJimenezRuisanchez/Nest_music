@@ -40,7 +40,7 @@ class _SearchState extends State<Search> {
             children: List.generate(results.length, (index){
               var song = results[index].toString().split('/');
               context.read<CurrentSongState>().addSongToPlylist(song[0]+'/'+song[1]+'/'+song[2]+'/'+song[3]);
-              
+
               return Song(title: song[0], artist: song[1], duration: song[3], image: song[2]);
             }),
           )
